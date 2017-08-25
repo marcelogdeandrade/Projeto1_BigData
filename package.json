@@ -16,6 +16,8 @@
   },
   "dependencies": {
     "body-parser": "^1.17.2",
-    "express": "^4.15.4"
+    "download": "^6.2.5",
+    "express": "^4.15.4",
+    "mysql": "^2.14.1"
   }
 }
