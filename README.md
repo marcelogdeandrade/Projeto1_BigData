@@ -9,17 +9,19 @@ Rode `$ npm install`
 
 Crie um arquivo `credentials.js` e preencha com suas informações de credenciais do DB da seguinte maneira:
 
-`
+```
 export const user = '[seu_usuario]'
 export const password = '[sua_senha]'
-`
+```
 
 Exemplo:
 
-`
+
+```
 export const user = 'root'
 export const password = '12345'
-`
+```
+
 
 Rode `$ npm run babel` para iniciar o servidor
 
