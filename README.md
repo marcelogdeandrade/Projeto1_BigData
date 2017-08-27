@@ -29,7 +29,10 @@ Rode `$ npm run babel` para iniciar o servidor
 ## Documentação de alguns pacotes usados;
 
 [Joi](https://github.com/hapijs/joi): Schemas de validação 
+
 [Mocha](https://github.com/mochajs/mocha): Auxilio para testes
+
 [Chai](https://github.com/chaijs/chai): Integrado com mocha para auxilio de testes
+
 [Express](https://github.com/expressjs/express): Framework para o Node
 
