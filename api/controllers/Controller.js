@@ -3,9 +3,9 @@ import {
 } from './Schemas'
 
 /**
- * @api {get} /get_dog Lista todos cachorros
- * @apiName Get Dog
- * @apiGroup Dog
+ * @api {get} /get_species Lista todos cachorros
+ * @apiName Get Species
+ * @apiGroup Specie
  * @apiVersion 1.0.0
  *
  *
@@ -13,7 +13,7 @@ import {
  * @apiSuccess {String} lastname  Lastname of the User.
  *
  */
-exports.list_all_dogs = function (req, res) {
+exports.list_all_species = function (req, res) {
   var db = require('../models/Model')
   var sql = 'SELECT * FROM Species'
   db.query(sql, function (error, results, fields) {
@@ -23,15 +23,15 @@ exports.list_all_dogs = function (req, res) {
   });
 };
 /**
- * @api {post} /get_dog Adiciona um cachorro
- * @apiName Put Dog
- * @apiGroup Dog
+ * @api {post} /get_species Adiciona um cachorro
+ * @apiName Put Species
+ * @apiGroup Specie
  * @apiVersion 1.0.0
  *
  * @apiSuccess {String} firstname Firstname of the User.
  * @apiSuccess {String} lastname  Lastname of the User.
  */
-exports.add_dog = function (req, res) {
+exports.add_specie = function (req, res) {
   var db = require('../models/Model')
   var body = req.body
   const validationError = validateSpecie(body)
