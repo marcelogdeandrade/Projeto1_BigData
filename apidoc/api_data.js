@@ -1,62 +1,85 @@
 define({ "api": [
   {
-    "type": "get",
-    "url": "/get_dog",
-    "title": "Lista todos cachorros",
-    "name": "Get_Dog",
-    "group": "Dog",
+    "type": "post",
+    "url": "/species",
+    "title": "Adiciona uma espécie",
+    "name": "Add_Species",
+    "group": "Species",
     "version": "1.0.0",
-    "success": {
+    "parameter": {
       "fields": {
-        "Success 200": [
+        "Parameter": [
           {
-            "group": "Success 200",
+            "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "firstname",
-            "description": "<p>Firstname of the User.</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "lastname",
-            "description": "<p>Lastname of the User.</p>"
+            "field": "name",
+            "description": "<p>Nome da espécie.</p>"
           }
         ]
       }
     },
     "filename": "api/controllers/Controller.js",
-    "groupTitle": "Dog"
+    "groupTitle": "Species"
   },
   {
-    "type": "post",
-    "url": "/get_dog",
-    "title": "Adiciona um cachorro",
-    "name": "Put_Dog",
-    "group": "Dog",
+    "type": "get",
+    "url": "/species",
+    "title": "Lista todas espécies",
+    "name": "Get_Species",
+    "group": "Species",
     "version": "1.0.0",
     "success": {
       "fields": {
         "Success 200": [
           {
             "group": "Success 200",
-            "type": "String",
+            "type": "Object[]",
             "optional": false,
-            "field": "firstname",
-            "description": "<p>Firstname of the User.</p>"
+            "field": "data",
+            "description": "<p>Array de espécies.</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "lastname",
-            "description": "<p>Lastname of the User.</p>"
+            "field": "data.idSpecie",
+            "description": "<p>id da espécie.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "data.name",
+            "description": "<p>Nome da espécie.</p>"
           }
         ]
       }
     },
     "filename": "api/controllers/Controller.js",
-    "groupTitle": "Dog"
+    "groupTitle": "Species"
+  },
+  {
+    "type": "delete",
+    "url": "/species",
+    "title": "Remove uma espécie",
+    "name": "Remove_Species",
+    "group": "Species",
+    "version": "1.0.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Id da espécie.</p>"
+          }
+        ]
+      }
+    },
+    "filename": "api/controllers/Controller.js",
+    "groupTitle": "Species"
   }
 ] });
