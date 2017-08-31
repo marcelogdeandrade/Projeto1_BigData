@@ -25,6 +25,9 @@ export const password = '12345'
 
 Rode `$ npm run babel` para iniciar o servidor
 
+## Criar documentação 
+
+`$ apidoc -i api/ -o apidoc/`
 
 ## Documentação de alguns pacotes usados;
 
@@ -35,4 +38,5 @@ Rode `$ npm run babel` para iniciar o servidor
 [Chai](https://github.com/chaijs/chai): Integrado com mocha para auxilio de testes
 
 [Express](https://github.com/expressjs/express): Framework para o Node
+
 
