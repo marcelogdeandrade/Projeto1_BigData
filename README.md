@@ -27,6 +27,12 @@ Rode `$ npm run babel` para iniciar o servidor
 
 ## Criar documentação 
 
+Instalar ApiDoc
+
+`$ npm install apidoc -g`
+
+Rodar comando
+
 `$ apidoc -i api/ -o apidoc/`
 
 ## Documentação de alguns pacotes usados;
