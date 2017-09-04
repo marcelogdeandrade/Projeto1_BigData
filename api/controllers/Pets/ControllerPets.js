@@ -3,6 +3,13 @@ import {
   validateRemovePet
 } from './Schemas'
 
+import {
+  script_list_all_pets,
+  script_add_pet,
+  script_add_pet_medicines,
+  script_remove_pet
+} from './Scripts'
+
 /**
  * @api {get} /pets Lista todas espécies
  * @apiName Get Pets
@@ -20,7 +27,8 @@ import {
  */
 exports.list_all_pets = function (req, res) {
   var db = require('../../models/Model')
-  var sql = "SELECT * FROM Pets, Species WHERE Pets.status='1' AND Pets.idSpecies = Species.idSpecies"
+  var sql = script_list_all_pets()
+
   db.query(sql, function (error, results, fields) {
     if (error)
       res.send(error);
@@ -30,7 +38,7 @@ exports.list_all_pets = function (req, res) {
 /**
  * @api {post} /pets Adiciona um pet
  * @apiName Add Pet
- * @apiGroup pets
+ * @apiGroup Pets
  * @apiVersion 1.0.0
  *
  * @apiParam {String} name Nome do pet.
@@ -38,24 +46,60 @@ exports.list_all_pets = function (req, res) {
  * @apiParam {String} data.birthDate Aniversario do pet.
  * @apiParam {String} data.idSpecies id da Espécie do pet.
  * @apiParam {String} data.idClient id do Dono do pet.
+ * @apiParam {String[]} data.medicines Array de ids dos remédios do pet
  */
 exports.add_pet = function (req, res) {
   var db = require('../../models/Model')
   var body = req.body
+
   const validationError = validatePet(body)
   if (validationError) {
     res.send(validationError)
   } else {
+
     const namePet = body.name
     const birthDate = body.birthDate
-    const Species = body.species
+    const idSpecies = body.idSpecies
+    const idClient = body.idClient
+    const medicines = body.medicines
 
-    var sql = `INSERT INTO Pets (idPet, name, birthDate, idSpecies, idClient, status)
-                VALUES (NULL, "${namePet}", "${birthDate}","${idSpecies}", NULL, TRUE)`;
-    db.query(sql, function (error, result) {
-      if (error)
-        res.send(error);
-      res.json(result);
+    // Trocar biblioteca para MySql 2.0 usando Promises
+    db.beginTransaction(function (err) {
+      if (err) { res.send(error) }
+      db.query(script_add_pet(namePet, birthDate, idSpecies, idClient), function (error, results, fields) {
+        if (error) { 
+          return db.rollback(function () {
+            res.send(error);
+          });
+        }
+        const idPet = results.insertId
+        const sql_add_pet_medicines = script_add_pet_medicines(idPet, medicines)
+        if (!sql_add_pet_medicines){
+          db.commit(function (err) {
+            if (err) {
+              return db.rollback(function () {
+                res.send(error);
+              });
+            }
+            res.json(results);
+          });
+        }
+        db.query(script_add_pet_medicines(idPet, medicines), function (error, results, fields) {
+          if (error) {
+            return db.rollback(function () {
+              res.send(error);
+            });
+          }
+          db.commit(function (err) {
+            if (err) {
+              return db.rollback(function () {
+                res.send(error);
+              });
+            }
+            res.json(results);
+          });
+        });
+      });
     });
   }
 };
@@ -77,7 +121,7 @@ exports.remove_pet = function (req, res) {
     res.send(validationError)
   } else {
     const idPet = body.id
-    var sql = `UPDATE Pets SET status = '0' WHERE idPet='${idPet}'`;
+    var sql = script_remove_pet(idPet);
     db.query(sql, function (error, result) {
       if (error)
         res.send(error);

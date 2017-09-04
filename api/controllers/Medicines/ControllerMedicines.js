@@ -6,7 +6,7 @@ import {
 /**
  * @api {get} /medicines Lista todos remédios
  * @apiName Get medicines
- * @apiGroup medicines
+ * @apiGroup Medicines
  * @apiVersion 1.0.0
  *
  *

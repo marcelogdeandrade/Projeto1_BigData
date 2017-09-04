@@ -40,7 +40,7 @@ exports.add_species = function (req, res) {
     res.send(validationError)
   } else {
     const nameSpecies = body.name
-    var sql = `INSERT INTO Species (idSpecies, nameSpecies, status) VALUES (NULL, "${nameSpecies}", TRUE)`;
+    var sql = `INSERT INTO Species (idSpecies, name, status) VALUES (NULL, "${nameSpecies}", TRUE)`;
     db.query(sql, function (error, result) {
       if (error)
         res.send(error);
