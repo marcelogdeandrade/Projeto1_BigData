@@ -1,5 +1,5 @@
 import {
-  validateSpecie,
+  validateSpecies,
   validateRemoveSpecies
 } from './Schemas'
 
@@ -11,12 +11,12 @@ import {
  *
  *
  * @apiSuccess {Object[]} data Array de espécies.
- * @apiSuccess {String} data.idSpecie id da espécie.
+ * @apiSuccess {String} data.idSpecies id da espécie.
  * @apiSuccess {String} data.name Nome da espécie.
  *
  */
 exports.list_all_species = function (req, res) {
-  var db = require('../models/Model')
+  var db = require('../../models/Model')
   var sql = "SELECT * FROM Species WHERE status='1'"
   db.query(sql, function (error, results, fields) {
     if (error)
@@ -32,15 +32,15 @@ exports.list_all_species = function (req, res) {
  *
  * @apiParam {String} name Nome da espécie.
  */
-exports.add_specie = function (req, res) {
-  var db = require('../models/Model')
+exports.add_species = function (req, res) {
+  var db = require('../../models/Model')
   var body = req.body
-  const validationError = validateSpecie(body)
+  const validationError = validateSpecies(body)
   if (validationError) {
     res.send(validationError)
   } else {
-    const nameSpecie = body.name
-    var sql = `INSERT INTO Species (idSpecie, name, status) VALUES (NULL, "${nameSpecie}", TRUE)`;
+    const nameSpecies = body.name
+    var sql = `INSERT INTO Species (idSpecies, nameSpecies, status) VALUES (NULL, "${nameSpecies}", TRUE)`;
     db.query(sql, function (error, result) {
       if (error)
         res.send(error);
@@ -58,7 +58,7 @@ exports.add_specie = function (req, res) {
  * @apiParam {String} id Id da espécie.
  */
 exports.remove_species = function (req, res) {
-  var db = require('../models/Model')
+  var db = require('../../models/Model')
   var body = req.body
 
   const validationError = validateRemoveSpecies(body)
@@ -66,7 +66,7 @@ exports.remove_species = function (req, res) {
     res.send(validationError)
   } else {
     const idSpecies = body.id
-    var sql = `UPDATE Species SET status = '0' WHERE idSpecie='${idSpecies}'`;
+    var sql = `UPDATE Species SET status = '0' WHERE idSpecies='${idSpecies}'`;
     db.query(sql, function (error, result) {
       if (error)
         res.send(error);
