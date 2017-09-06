@@ -60,46 +60,12 @@ exports.add_pet = function (req, res) {
     const namePet = body.name
     const birthDate = body.birthDate
     const idSpecies = body.idSpecies
-    const idClient = body.idClient
-    const medicines = body.medicines
 
-    // Trocar biblioteca para MySql 2.0 usando Promises
-    db.beginTransaction(function (err) {
-      if (err) { res.send(error) }
-      db.query(script_add_pet(namePet, birthDate, idSpecies, idClient), function (error, results, fields) {
-        if (error) { 
-          return db.rollback(function () {
-            res.send(error);
-          });
-        }
-        const idPet = results.insertId
-        const sql_add_pet_medicines = script_add_pet_medicines(idPet, medicines)
-        if (!sql_add_pet_medicines){
-          db.commit(function (err) {
-            if (err) {
-              return db.rollback(function () {
-                res.send(error);
-              });
-            }
-            res.json(results);
-          });
-        }
-        db.query(script_add_pet_medicines(idPet, medicines), function (error, results, fields) {
-          if (error) {
-            return db.rollback(function () {
-              res.send(error);
-            });
-          }
-          db.commit(function (err) {
-            if (err) {
-              return db.rollback(function () {
-                res.send(error);
-              });
-            }
-            res.json(results);
-          });
-        });
-      });
+    const sql = script_add_pet(namePet, birthDate, idSpecies)
+    db.query(sql, function (error, results, fields) {
+      if (error)
+        res.send(error);
+      res.json(results);
     });
   }
 };

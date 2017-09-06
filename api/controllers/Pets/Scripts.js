@@ -3,32 +3,22 @@
  */
 exports.script_list_all_pets = function(){
   return `SELECT 
-              Pets.idPet, 
-              Pets.name, 
-              Species.name, 
-              Pets.birthDate, 
-              Clients.name, 
-              Medicines.name 
-             FROM Pets, 
-              Species, 
-              Medicines,
-              Clients,
-              RelMedicinesPets
-            WHERE Pets.status='1' 
-              AND Pets.idSpecies = Species.idSpecies
-              AND Pets.idClient = Clients.idClient
-              AND Pets.idPet = RelMedicinesPets.idPet
-              AND Medicines.idMedicine = RelMedicinesPets.idMedicine`
+            *
+          FROM Pets
+          LEFT OUTER JOIN
+              Clients
+          ON 
+              Clients.idClient = Pets.idClient`
 }
 
 /**
  * AddPet
  */
-exports.script_add_pet = function(name, birthDate, idSpecies, idClient){
+exports.script_add_pet = function(name, birthDate, idSpecies){
   return `INSERT INTO 
             Pets (idPet, name, birthDate, idSpecies, idClient, status)
           VALUES 
-            (NULL, "${name}", "${birthDate}","${idSpecies}", NULL, TRUE)`
+            (NULL, '${name}', '${birthDate}', '${idSpecies}', NULL, TRUE)`
 }
 
 exports.script_add_pet_medicines = function(idPet, medicines){
