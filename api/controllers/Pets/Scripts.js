@@ -3,12 +3,18 @@
  */
 exports.script_list_all_pets = function(){
   return `SELECT 
-            *
-          FROM Pets
+            Clients.name as nameClient,
+            Pets.name as namePet,
+            Species.name as nameSpecies,
+            Pets.idPet,
+            Pets.birthDate
+          FROM Species,Pets
           LEFT OUTER JOIN
-              Clients
+               Clients
           ON 
-              Clients.idClient = Pets.idClient`
+            Pets.idClient = Clients.idClient
+          WHERE
+            Pets.idSpecies = Species.idSpecies`
 }
 
 /**
@@ -21,19 +27,6 @@ exports.script_add_pet = function(name, birthDate, idSpecies){
             (NULL, '${name}', '${birthDate}', '${idSpecies}', NULL, TRUE)`
 }
 
-exports.script_add_pet_medicines = function(idPet, medicines){
-  let result = ''
-  if (Array.isArray(medicines)){
-    medicines.map(idMedicine = () => {
-      result += `INSERT INTO 
-            RelMedicinesPets (idPet, idPet)
-          VALUES 
-            ("${idPet}", "${idMedicine}")`
-    });
-  }
-  return result
-}
-
 /**
  * Remove pet
  */
@@ -41,3 +34,11 @@ exports.script_add_pet_medicines = function(idPet, medicines){
 exports.script_remove_pet = function(idPet){
   return `UPDATE Pets SET status = '0' WHERE idPet='${idPet}'`
 }
+
+/**
+ * Update pet
+ */
+
+ exports.script_update_pet = function(idPet, column, value){
+   return `UPDATE Pets SET ${column} = '${value}' WHERE idPet='${idPet}'`
+ }

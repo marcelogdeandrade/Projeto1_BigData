@@ -12,6 +12,7 @@ module.exports = function (app) {
   app.route('/pets')
     .get(Pets.list_all_pets)
     .post(Pets.add_pet)
+    .put(Pets.update_pet)
     .delete(Pets.remove_pet)
 
   app.route('/medicines')

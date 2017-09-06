@@ -7,7 +7,8 @@ import {
   script_list_all_pets,
   script_add_pet,
   script_add_pet_medicines,
-  script_remove_pet
+  script_remove_pet,
+  script_update_pet
 } from './Scripts'
 
 /**
@@ -95,3 +96,30 @@ exports.remove_pet = function (req, res) {
     });
   }
 };
+
+/**
+ * @api {update} /pet Atualiza um pet
+ * @apiName Update Pets
+ * @apiGroup Pets
+ * @apiVersion 1.0.0
+ *
+ * @apiParam {String} id Id do Pet.
+ * @apiParam {String} column Campo a ser atualizado.
+ * @apiParam {String} value Valor a ser atualizado.
+ */
+exports.update_pet = function (req, res) {
+  var db = require('../../models/Model')
+  var body = req.body
+
+  const idPet = body.id
+  const column = body.column
+  const value = body.value
+  var sql = script_update_pet(idPet, column, value);
+  db.query(sql, function (error, result) {
+    if (error)
+      res.send(error);
+    res.json(result);
+  });
+};
+
+
