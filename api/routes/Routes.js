@@ -3,6 +3,7 @@ module.exports = function (app) {
   var Pets = require('../controllers/Pets/ControllerPets');
   var Medicines = require('../controllers/Medicines/ControllerMedicines');
   var RelMecidinesPets = require('../controllers/RelMedicinesPets/ControllerRelMedicinesPets');
+  var Illnesses = require('../controllers/Illnesses/ControllerIllnesses');
   // todoList Routes
   app.route('/species')
     .get(Species.list_all_species)
@@ -27,4 +28,10 @@ module.exports = function (app) {
     .post(RelMecidinesPets.add_relation_pet_medicine)
     .delete(RelMecidinesPets.remove_relation_pet_medicine)
     .put(RelMecidinesPets.update_relation_pet_medicine)
+
+  app.route('/illnesses')
+    .get(Illnesses.list_all_illnesses)
+    .post(Illnesses.add_illness)
+    .delete(Illnesses.remove_illness)
+    .put(Illnesses.update_illness)
 };
