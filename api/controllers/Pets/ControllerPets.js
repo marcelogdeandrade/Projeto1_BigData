@@ -47,7 +47,6 @@ exports.list_all_pets = function (req, res) {
  * @apiParam {String} data.birthDate Aniversario do pet.
  * @apiParam {String} data.idSpecies id da Espécie do pet.
  * @apiParam {String} data.idClient id do Dono do pet.
- * @apiParam {String[]} data.medicines Array de ids dos remédios do pet
  */
 exports.add_pet = function (req, res) {
   var db = require('../../models/Model')
@@ -121,5 +120,3 @@ exports.update_pet = function (req, res) {
     res.json(result);
   });
 };
-
-
