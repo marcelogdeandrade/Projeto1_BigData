@@ -98,6 +98,17 @@ exports.remove_relation_pet_medicine = function (req, res) {
   }
 };
 
+/**
+ * @api {update} /pet Atualiza uma relacao Pet/Remedio
+ * @apiName Update RelMecidinesPets
+ * @apiGroup RelMecidinesPets
+ * @apiVersion 1.0.0
+ *
+ * @apiParam {String} id Id do Pet.
+  * @apiParam {String} id Id do Remedio.
+ * @apiParam {String} column Campo a ser atualizado.
+ * @apiParam {String} value Valor a ser atualizado.
+ */
 exports.update_relation_pet_medicine = function (req, res) {
   var db = require('../../models/Model')
   var body = req.body
