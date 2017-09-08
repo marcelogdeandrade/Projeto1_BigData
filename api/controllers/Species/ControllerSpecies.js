@@ -3,6 +3,13 @@ import {
   validateRemoveSpecies
 } from './Schemas'
 
+import {
+  script_list_all_species,
+  script_add_species,
+  script_remove_species,
+  script_update_species
+} from './Scripts'
+
 /**
  * @api {get} /species Lista todas espécies
  * @apiName Get Species
@@ -17,7 +24,8 @@ import {
  */
 exports.list_all_species = function (req, res) {
   var db = require('../../models/Model')
-  var sql = "SELECT * FROM Species WHERE status='1'"
+  var sql = script_list_all_species()
+
   db.query(sql, function (error, results, fields) {
     if (error)
       res.send(error);
@@ -40,7 +48,7 @@ exports.add_species = function (req, res) {
     res.send(validationError)
   } else {
     const nameSpecies = body.name
-    var sql = `INSERT INTO Species (idSpecies, name, status) VALUES (NULL, "${nameSpecies}", TRUE)`;
+    var sql = script_add_species(nameSpecies);
     db.query(sql, function (error, result) {
       if (error)
         res.send(error);
@@ -66,11 +74,34 @@ exports.remove_species = function (req, res) {
     res.send(validationError)
   } else {
     const idSpecies = body.id
-    var sql = `UPDATE Species SET status = '0' WHERE idSpecies='${idSpecies}'`;
+    var sql = script_remove_species(idSpecies);
     db.query(sql, function (error, result) {
       if (error)
         res.send(error);
       res.json(result);
     });
   }
+};
+
+/**
+ * @api {update} /Species Atualiza uma especie
+ * @apiName Update Species
+ * @apiGroup Species
+ * @apiVersion 1.0.0
+ *
+ * @apiParam {String} id Id da especie.
+ * @apiParam {String} value Valor a ser atualizado.
+ */
+exports.update_species = function (req, res) {
+  var db = require('../../models/Model')
+  var body = req.body
+
+  const idSpecies = body.id
+  const value = body.value
+  var sql = script_update_species(idSpecies, value);
+  db.query(sql, function (error, result) {
+    if (error)
+      res.send(error);
+    res.json(result);
+  });
 };

@@ -3,6 +3,12 @@ import {
   validateRemoveMedicine
 } from './Schemas'
 
+import {
+  script_list_all_medicines,
+  script_add_medicine,
+  script_remove_medicine,
+  script_update_medicine
+} from './Scripts'
 /**
  * @api {get} /medicines Lista todos remédios
  * @apiName Get medicines
@@ -17,7 +23,7 @@ import {
  */
 exports.list_all_medicines = function (req, res) {
   var db = require('../../models/Model')
-  var sql = "SELECT * FROM Medicines WHERE status='1'"
+  var sql = script_list_all_medicines()
   db.query(sql, function (error, results, fields) {
     if (error)
       res.send(error);
@@ -40,8 +46,7 @@ exports.add_medicine = function (req, res) {
     res.send(validationError)
   } else {
     const nameMedicine = body.name
-    var sql = `INSERT INTO Medicines (idMedicine, name, status)
-                VALUES (NULL, "${nameMedicine}", TRUE)`;
+    var sql = script_add_medicine(nameMedicine);
     db.query(sql, function (error, result) {
       if (error)
         res.send(error);
@@ -67,11 +72,34 @@ exports.remove_medicine = function (req, res) {
     res.send(validationError)
   } else {
     const idMedicine = body.id
-    var sql = `UPDATE Medicines SET status = '0' WHERE idMedicine='${idMedicine}'`;
+    var sql = script_remove_medicine(idMedicine);
     db.query(sql, function (error, result) {
       if (error)
         res.send(error);
       res.json(result);
     });
   }
+};
+
+/**
+ * @api {update} /Medicine Atualiza um remédio
+ * @apiName Update Medicine
+ * @apiGroup Medicine
+ * @apiVersion 1.0.0
+ *
+ * @apiParam {String} id Id do remédio.
+ * @apiParam {String} value Valor a ser atualizado.
+ */
+exports.update_medicine = function (req, res) {
+  var db = require('../../models/Model')
+  var body = req.body
+
+  const idMedicine = body.id
+  const value = body.value
+  var sql = script_update_medicine(idMedicine, value);
+  db.query(sql, function (error, result) {
+    if (error)
+      res.send(error);
+    res.json(result);
+  });
 };

@@ -8,6 +8,7 @@ module.exports = function (app) {
     .get(Species.list_all_species)
     .post(Species.add_species)
     .delete(Species.remove_species)
+    .put(Species.update_species)
 
   app.route('/pets')
     .get(Pets.list_all_pets)
@@ -19,4 +20,5 @@ module.exports = function (app) {
     .get(Medicines.list_all_medicines)
     .post(Medicines.add_medicine)
     .delete(Medicines.remove_medicine)
+    .put(Medicines.update_medicine)
 };

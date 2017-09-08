@@ -2,7 +2,7 @@
  * List Pets
  */
 exports.script_list_all_pets = function(){
-  return `SELECT 
+  return `SELECT
             Clients.name as nameClient,
             Pets.name as namePet,
             Species.name as nameSpecies,
@@ -11,19 +11,20 @@ exports.script_list_all_pets = function(){
           FROM Species,Pets
           LEFT OUTER JOIN
                Clients
-          ON 
+          ON
             Pets.idClient = Clients.idClient
           WHERE
-            Pets.idSpecies = Species.idSpecies`
+            Pets.idSpecies = Species.idSpecies
+            AND Pets.status = '1'`
 }
 
 /**
  * AddPet
  */
 exports.script_add_pet = function(name, birthDate, idSpecies){
-  return `INSERT INTO 
+  return `INSERT INTO
             Pets (idPet, name, birthDate, idSpecies, idClient, status)
-          VALUES 
+          VALUES
             (NULL, '${name}', '${birthDate}', '${idSpecies}', NULL, TRUE)`
 }
 
