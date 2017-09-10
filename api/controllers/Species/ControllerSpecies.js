@@ -67,13 +67,12 @@ exports.add_species = function (req, res) {
  */
 exports.remove_species = function (req, res) {
   var db = require('../../models/Model')
-  var body = req.body
-
+  var body = req.query
   const validationError = validateRemoveSpecies(body)
   if (validationError) {
     res.send(validationError)
   } else {
-    const idSpecies = body.id
+    const idSpecies = body.idSpecies
     var sql = script_remove_species(idSpecies);
     db.query(sql, function (error, result) {
       if (error)

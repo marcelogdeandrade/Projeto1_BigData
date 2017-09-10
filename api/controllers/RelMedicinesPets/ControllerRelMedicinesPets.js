@@ -10,7 +10,7 @@ import {
   script_update_relation_pet_medicine
 } from './Scripts'
 /**
- * @api {get} /RelMecidinesPets Lista todas as relacoes Pets/Remedios
+ * @api {get} /relpetsmedicines Lista todas as relacoes Pets/Remedios
  * @apiName Get RelMecidinesPets
  * @apiGroup RelMecidinesPets
  * @apiVersion 1.0.0
@@ -20,7 +20,6 @@ import {
  * @apiSuccess {String} data.idPet id do pet.
  * @apiSuccess {String} data.idMedicine id do remédio.
  * @apiSuccess {String} data.quantity quantidade da dose do remedio.
- * @apiSuccess {String} data.nextDose data da proxima dose.
  *
  */
 exports.list_all_relations_pets_medicines = function (req, res) {
@@ -35,7 +34,7 @@ exports.list_all_relations_pets_medicines = function (req, res) {
 };
 
 /**
- * @api {post} /pets Adiciona uma relacao Pet/Remedio
+ * @api {post} /relpetsmedicines Adiciona uma relacao Pet/Remedio
  * @apiName Add RelMecidinesPets
  * @apiGroup RelMecidinesPets
  * @apiVersion 1.0.0
@@ -44,14 +43,13 @@ exports.list_all_relations_pets_medicines = function (req, res) {
  * @apiSuccess {String} data.idPet id do pet.
  * @apiSuccess {String} data.idMedicine id do remédio.
  * @apiSuccess {String} data.quantity quantidade da dose do remedio.
- * @apiSuccess {String} data.nextDose data da proxima dose.
  *
  */
 exports.add_relation_pet_medicine = function (req, res) {
   var db = require('../../models/Model')
   var body = req.body
 
-  const validationError = validateRelation(body)
+  const validationError = validateRelationPetMedicine(body)
   if (validationError) {
     res.send(validationError)
   } else {
@@ -59,9 +57,8 @@ exports.add_relation_pet_medicine = function (req, res) {
     const idPet = body.idPet
     const idMedicine = body.idMedicine
     const quantity = body.quantity
-    const nextDose = body.nextDose
 
-    const sql = script_add_relation_pet_medicine(idPet, idMedicine, quantity, nextDose)
+    const sql = script_add_relation_pet_medicine(idPet, idMedicine, quantity)
     db.query(sql, function (error, results, fields) {
       if (error)
         res.send(error);
@@ -71,7 +68,7 @@ exports.add_relation_pet_medicine = function (req, res) {
 };
 
 /**
- * @api {delete} /pet Remove uma relacao pet/remedio
+ * @api {delete} /relpetsmedicines Remove uma relacao pet/remedio
  * @apiName Remove Relation
  * @apiGroup RelMecidinesPets
  * @apiVersion 1.0.0
@@ -81,15 +78,17 @@ exports.add_relation_pet_medicine = function (req, res) {
  */
 exports.remove_relation_pet_medicine = function (req, res) {
   var db = require('../../models/Model')
-  var body = req.body
+  var body = req.query
 
-  const validationError = validateRemoveRelation(body)
+  const validationError = validateRemoveRelationPetMedicine(body)
   if (validationError) {
     res.send(validationError)
   } else {
+    console.log(body)
     const idPet = body.idPet
     const idMedicine = body.idMedicine
-    var sql = script_remove_relation_pet_medicine(idPet, idMedicine);
+    const idMedicinePet = body.idMedicinePet
+    var sql = script_remove_relation_pet_medicine(idMedicinePet, idPet, idMedicine);
     db.query(sql, function (error, result) {
       if (error)
         res.send(error);
@@ -99,7 +98,7 @@ exports.remove_relation_pet_medicine = function (req, res) {
 };
 
 /**
- * @api {update} /pet Atualiza uma relacao Pet/Remedio
+ * @api {put} /relpetsmedicines Atualiza uma relacao Pet/Remedio
  * @apiName Update RelMecidinesPets
  * @apiGroup RelMecidinesPets
  * @apiVersion 1.0.0

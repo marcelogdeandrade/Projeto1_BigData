@@ -32,7 +32,7 @@ exports.list_all_illnesses = function (req, res) {
   });
 };
 /**
- * @api {post} /pets Adiciona uma doença
+ * @api {post} /illnesses Adiciona uma doença
  * @apiName Add Illness
  * @apiGroup Illnesses
  * @apiVersion 1.0.0
@@ -59,7 +59,7 @@ exports.add_illness = function (req, res) {
 };
 
 /**
- * @api {delete} /pet Remove uma doença
+ * @api {delete} /illnesses Remove uma doença
  * @apiName Remove Illness
  * @apiGroup Illnesses
  * @apiVersion 1.0.0
@@ -68,13 +68,13 @@ exports.add_illness = function (req, res) {
  */
 exports.remove_illness = function (req, res) {
   var db = require('../../models/Model')
-  var body = req.body
+  var body = req.query
 
   const validationError = validateRemoveIllness(body)
   if (validationError) {
     res.send(validationError)
   } else {
-    const idIllness = body.id
+    const idIllness = body.idIllness
     var sql = script_remove_illness(idIllness);
     db.query(sql, function (error, result) {
       if (error)
@@ -85,9 +85,9 @@ exports.remove_illness = function (req, res) {
 };
 
 /**
- * @api {update} /Illness Atualiza uma doença
+ * @api {put} /illnesses Atualiza uma doença
  * @apiName Update Illness
- * @apiGroup Illness
+ * @apiGroup Illnesses
  * @apiVersion 1.0.0
  *
  * @apiParam {String} id Id da doença.

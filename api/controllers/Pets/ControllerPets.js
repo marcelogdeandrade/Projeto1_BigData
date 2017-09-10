@@ -80,13 +80,13 @@ exports.add_pet = function (req, res) {
  */
 exports.remove_pet = function (req, res) {
   var db = require('../../models/Model')
-  var body = req.body
-
+  var body = req.query
+  console.log(body)
   const validationError = validateRemovePet(body)
   if (validationError) {
     res.send(validationError)
   } else {
-    const idPet = body.id
+    const idPet = body.idPet
     var sql = script_remove_pet(idPet);
     db.query(sql, function (error, result) {
       if (error)
@@ -97,7 +97,7 @@ exports.remove_pet = function (req, res) {
 };
 
 /**
- * @api {update} /pet Atualiza um pet
+ * @api {put} /pet Atualiza um pet
  * @apiName Update Pets
  * @apiGroup Pets
  * @apiVersion 1.0.0

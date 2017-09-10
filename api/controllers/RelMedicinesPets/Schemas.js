@@ -8,7 +8,6 @@ const Joi = require('joi');
    idPet: Joi.string().alphanum().required(),
    idMedicine: Joi.string().alphanum().required(),
    quantity: Joi.string().alphanum(),
-   nextDose: Joi.string().required().required(),
  })
 
  const removeRelMecidinesPetsSchema = Joi.object().keys({
@@ -17,7 +16,7 @@ const Joi = require('joi');
  })
  export const validateRelationPetMedicine = (body) => {
    const result = Joi.validate({ idPet: body.idPet , idMedicine: body.idMedicine,
-                               quantity: body.quantity, nextDose: body.nextDose}, RelMecidinesPetsSchema);
+                               quantity: body.quantity}, RelMecidinesPetsSchema);
    return result.error
  }
 

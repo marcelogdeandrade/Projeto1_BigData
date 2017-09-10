@@ -5,11 +5,11 @@ const Joi = require('joi');
  */
 const illnessSchema = Joi.object().keys({
   name: Joi.string().required(),
-  contagious: Joi.string().alphanum().required()
+  contagious: Joi.number().required()
 })
 
 const removeIllnessSchema = Joi.object().keys({
-  id: Joi.string().alphanum().required()
+  idIllness: Joi.string().alphanum().required()
 })
 
 /**
@@ -21,6 +21,6 @@ export const validateIllness = (body) => {
 }
 
 export const validateRemoveIllness = (body) => {
-  const result = Joi.validate({ id: body.id }, removeIllnessSchema);
+  const result = Joi.validate({ idIllness: body.idIllness }, removeIllnessSchema);
   return result.error
 }

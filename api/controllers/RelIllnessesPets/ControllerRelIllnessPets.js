@@ -12,7 +12,7 @@ import {
 
 
 /**
- * @api {get} /RelIllnessesPets Lista todas as relacoes Doenças/Pets
+ * @api {get} /relillnessespets Lista todas as relacoes Doenças/Pets
  * @apiName Get RelIllnessesPets
  * @apiGroup RelIllnessesPets
  * @apiVersion 1.0.0
@@ -35,7 +35,7 @@ exports.list_all_relations_illness_pets = function (req, res) {
 };
 
 /**
- * @api {post} /pets Adiciona uma relacao Doença/Pet
+ * @api {post} /relillnessespets Adiciona uma relacao Doença/Pet
  * @apiName Add RelIllnessesPets
  * @apiGroup RelIllnessesPets
  * @apiVersion 1.0.0
@@ -67,7 +67,7 @@ exports.add_relation_ilness_pet = function (req, res) {
 };
 
 /**
- * @api {delete} /pet Remove uma relacao Doença/Pet
+ * @api {delete} /relillnessespets Remove uma relacao Doença/Pet
  * @apiName Remove Relation
  * @apiGroup RelIllnessesPets
  * @apiVersion 1.0.0
@@ -77,7 +77,7 @@ exports.add_relation_ilness_pet = function (req, res) {
  */
 exports.remove_relation_ilness_pet = function (req, res) {
   var db = require('../../models/Model')
-  var body = req.body
+  var body = req.query
 
   const validationError = validateRemoveRelationIllnessPet(body)
   if (validationError) {
@@ -85,7 +85,8 @@ exports.remove_relation_ilness_pet = function (req, res) {
   } else {
     const idPet = body.idPet
     const idIllness = body.idIllness
-    var sql = script_remove_relation_ilness_pet(idPet, idIllness);
+    const idIllnessPet = body.idIllnessPet
+    var sql = script_remove_relation_ilness_pet(idIllnessPet, idPet, idIllness);
     db.query(sql, function (error, result) {
       if (error)
         res.send(error);
@@ -95,7 +96,7 @@ exports.remove_relation_ilness_pet = function (req, res) {
 };
 
 /**
- * @api {update} /pet Atualiza uma relacao Pet/Doenca
+ * @api {put} /relillnessespets Atualiza uma relacao Pet/Doenca
  * @apiName Update RelIllnessesPets
  * @apiGroup RelIllnessesPets
  * @apiVersion 1.0.0

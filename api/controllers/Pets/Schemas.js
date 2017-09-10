@@ -23,6 +23,6 @@ export const validatePet = (body) => {
 }
 
 export const validateRemovePet = (body) => {
-  const result = Joi.validate({ idPet: body.id }, removePetSchema);
+  const result = Joi.validate({ idPet: body.idPet }, removePetSchema);
   return result.error
 }

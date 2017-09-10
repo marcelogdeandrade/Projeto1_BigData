@@ -31,7 +31,7 @@ exports.list_all_medicines = function (req, res) {
   });
 };
 /**
- * @api {post} /pets Adiciona um remédio
+ * @api {post} /medicines Adiciona um remédio
  * @apiName Add Medicine
  * @apiGroup Medicines
  * @apiVersion 1.0.0
@@ -56,8 +56,8 @@ exports.add_medicine = function (req, res) {
 };
 
 /**
- * @api {delete} /pet Remove um remédio
- * @apiName Remove Medice
+ * @api {delete} /medicines Remove um remédio
+ * @apiName Remove Medicine
  * @apiGroup Medicines
  * @apiVersion 1.0.0
  *
@@ -65,13 +65,13 @@ exports.add_medicine = function (req, res) {
  */
 exports.remove_medicine = function (req, res) {
   var db = require('../../models/Model')
-  var body = req.body
+  var body = req.query
 
   const validationError = validateRemoveMedicine(body)
   if (validationError) {
     res.send(validationError)
   } else {
-    const idMedicine = body.id
+    const idMedicine = body.idMedicine
     var sql = script_remove_medicine(idMedicine);
     db.query(sql, function (error, result) {
       if (error)
@@ -82,9 +82,9 @@ exports.remove_medicine = function (req, res) {
 };
 
 /**
- * @api {update} /Medicine Atualiza um remédio
+ * @api {put} /medicines Atualiza um remédio
  * @apiName Update Medicine
- * @apiGroup Medicine
+ * @apiGroup Medicines
  * @apiVersion 1.0.0
  *
  * @apiParam {String} id Id do remédio.

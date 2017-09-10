@@ -8,7 +8,7 @@ const medicineSchema = Joi.object().keys({
 })
 
 const removeMedicineSchema = Joi.object().keys({
-  id: Joi.string().alphanum().required()
+  idMedicine: Joi.string().alphanum().required()
 })
 
 /**
@@ -20,6 +20,6 @@ export const validateMedicine = (body) => {
 }
 
 export const validateRemoveMedicine = (body) => {
-  const result = Joi.validate({ id: body.id }, removeMedicineSchema);
+  const result = Joi.validate({ idMedicine: body.idMedicine }, removeMedicineSchema);
   return result.error
 }
