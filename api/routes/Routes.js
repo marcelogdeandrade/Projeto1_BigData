@@ -5,7 +5,10 @@ module.exports = function (app) {
   var RelMecidinesPets = require('../controllers/RelMedicinesPets/ControllerRelMedicinesPets');
   var Illnesses = require('../controllers/Illnesses/ControllerIllnesses');
   var RelIllnessesPets = require('../controllers/RelIllnessesPets/ControllerRelIllnessPets');
-  // todoList Routes
+  var Clients = require('../controllers/Clients/ControllerClients');
+  var Foods = require('../controllers/Foods/ControllerFoods');
+  var Foodlog = require('../controllers/FoodLog/ControllerFoodLog');
+  
   app.route('/species')
     .get(Species.list_all_species)
     .post(Species.add_species)
@@ -41,4 +44,22 @@ module.exports = function (app) {
     .post(RelIllnessesPets.add_relation_ilness_pet)
     .delete(RelIllnessesPets.remove_relation_ilness_pet)
     .put(RelIllnessesPets.update_relation_ilness_pet)
+
+  app.route('/clients')
+    .get(Clients.list_all_clients)
+    .post(Clients.add_client)
+    .delete(Clients.remove_client)
+    .put(Clients.update_client)
+
+  app.route('/foods')
+    .get(Foods.list_all_foods)
+    .post(Foods.add_food)
+    .delete(Foods.remove_food)
+    .put(Foods.update_food)
+
+  app.route('/foodlog')
+    .get(Foodlog.list_all_foodlog)
+    .post(Foodlog.add_foodlog)
+    .delete(Foodlog.remove_foodlog)
+    .put(Foodlog.update_foodlog)
 };

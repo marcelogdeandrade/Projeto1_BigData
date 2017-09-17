@@ -21,11 +21,11 @@ exports.script_list_all_pets = function(){
 /**
  * AddPet
  */
-exports.script_add_pet = function(name, birthDate, idSpecies){
+exports.script_add_pet = function(name, birthDate, idSpecies, idClient){
   return `INSERT INTO
             Pets (idPet, name, birthDate, idSpecies, idClient, status)
           VALUES
-            (NULL, '${name}', '${birthDate}', '${idSpecies}', NULL, TRUE)`
+            (NULL, '${name}', '${birthDate}', '${idSpecies}', ${idClient}, TRUE)`
 }
 
 /**

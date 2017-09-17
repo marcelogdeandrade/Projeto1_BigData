@@ -60,8 +60,11 @@ exports.add_pet = function (req, res) {
     const namePet = body.name
     const birthDate = body.birthDate
     const idSpecies = body.idSpecies
-
-    const sql = script_add_pet(namePet, birthDate, idSpecies)
+    let idClient = body.idClient
+    if (!idClient){
+      idClient = null
+    }
+    const sql = script_add_pet(namePet, birthDate, idSpecies, idClient)
     db.query(sql, function (error, results, fields) {
       if (error)
         res.send(error);
