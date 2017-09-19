@@ -97,13 +97,18 @@ exports.update_illness = function (req, res) {
   var db = require('../../models/Model')
   var body = req.body
 
-  const idIllness = body.id
-  const column = body.column
-  const value = body.value
-  var sql = script_update_illness(idIllness, column, value);
-  db.query(sql, function (error, result) {
-    if (error)
-      res.send(error);
-    res.json(result);
-  });
+  const validationError = validateIllness(body)
+  if (validationError) {
+    res.send(validationError)
+  } else {
+    const idIllness = body.idIllness
+    const nameIllness = body.name
+    const isContagious = body.contagious
+    var sql = script_update_illness(idIllness, nameIllness, isContagious);
+    db.query(sql, function (error, result) {
+      if (error)
+        res.send(error);
+      res.json(result);
+    });
+  }
 };

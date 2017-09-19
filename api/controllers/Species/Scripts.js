@@ -24,6 +24,6 @@ exports.script_remove_species = function(idSpecies){
  * Update species
  */
 
- exports.script_update_species = function(idSpecies, value){
-   return `UPDATE Species SET name = '${value}' WHERE idSpecies='${idSpecies}'`
+ exports.script_update_species = function(idSpecies, name){
+   return `UPDATE Species SET name = '${name}' WHERE idSpecies='${idSpecies}'`
  }

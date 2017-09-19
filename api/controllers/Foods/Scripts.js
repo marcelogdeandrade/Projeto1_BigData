@@ -38,6 +38,6 @@ exports.script_remove_food = function (idFood) {
  * Update food
  */
 
-exports.script_update_food = function (idFood, column, value) {
-  return `UPDATE Foods SET ${column} = '${value}' WHERE idPet='${idFood}'`
+exports.script_update_food = function (idFood, name, idSpecies, quantity) {
+  return `UPDATE Foods SET name = '${name}', idSpecies = '${idSpecies}', quantity = '${quantity}' WHERE idFood='${idFood}'`
 }

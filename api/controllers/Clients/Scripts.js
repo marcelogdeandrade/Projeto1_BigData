@@ -24,6 +24,6 @@ exports.script_remove_client = function (idClient) {
  * Update species
  */
 
-exports.script_update_client = function (idClient, value) {
-  return `UPDATE Species SET name = '${value}' WHERE idSpecies='${idClient}'`
+exports.script_update_client = function (idClient, name, birthDate) {
+  return `UPDATE Clients SET name = '${name}', birthDate='${birthDate}' WHERE idClient='${idClient}'`
 }

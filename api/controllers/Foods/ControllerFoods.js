@@ -48,6 +48,7 @@ exports.list_all_foods = function (req, res) {
 exports.add_food = function (req, res) {
   var db = require('../../models/Model')
   var body = req.body
+  console.log(body)
   const validationError = validateFoods(body)
   if (validationError) {
     res.send(validationError)
@@ -57,6 +58,7 @@ exports.add_food = function (req, res) {
     const quantity = body.quantity
 
     var sql = script_add_food(name, idSpecies, quantity);
+    
     db.query(sql, function (error, result) {
       if (error)
         res.send(error);
@@ -102,14 +104,22 @@ exports.remove_food = function (req, res) {
 exports.update_food = function (req, res) {
   var db = require('../../models/Model')
   var body = req.body
+  console.log(body)
+  const validationError = validateFoods(body)
+  if (validationError) {
+    res.send(validationError)
+  } else {
+    const name = body.name
+    const idFood = body.idFood
+    const idSpecies = body.idSpecies
+    const quantity = body.quantity
 
-  const idFood = body.idFood
-  const value = body.value
-  const column = body.column
-  var sql = script_update_food(idFood, value, column);
-  db.query(sql, function (error, result) {
-    if (error)
-      res.send(error);
-    res.json(result);
-  });
+    var sql = script_update_food(idFood, name, idSpecies, quantity);
+    db.query(sql, function (error, result) {
+      if (error)
+        res.send(error);
+      res.json(result);
+    });
+  }
 };
+

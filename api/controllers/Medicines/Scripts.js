@@ -24,6 +24,6 @@ exports.script_remove_medicine = function(idMedicine){
  * Update medicines
  */
 
- exports.script_update_medicine = function(idMedicine, value){
-   return `UPDATE Medicines SET name = '${value}' WHERE idMedicine='${idMedicine}'`
+ exports.script_update_medicine = function(idMedicine, name){
+   return `UPDATE Medicines SET name = '${name}' WHERE idMedicine='${idMedicine}'`
  }

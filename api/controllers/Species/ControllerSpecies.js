@@ -94,13 +94,17 @@ exports.remove_species = function (req, res) {
 exports.update_species = function (req, res) {
   var db = require('../../models/Model')
   var body = req.body
-
-  const idSpecies = body.id
-  const value = body.value
-  var sql = script_update_species(idSpecies, value);
-  db.query(sql, function (error, result) {
-    if (error)
-      res.send(error);
-    res.json(result);
-  });
+  const validationError = validateSpecies(body)
+  if (validationError) {
+    res.send(validationError)
+  } else {
+    const nameSpecies = body.name
+    const idSpecies = body.idSpecies
+    var sql = script_update_species(idSpecies, nameSpecies);
+    db.query(sql, function (error, result) {
+      if (error)
+        res.send(error);
+      res.json(result);
+    });
+  }
 };

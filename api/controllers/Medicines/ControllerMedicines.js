@@ -94,12 +94,17 @@ exports.update_medicine = function (req, res) {
   var db = require('../../models/Model')
   var body = req.body
 
-  const idMedicine = body.id
-  const value = body.value
-  var sql = script_update_medicine(idMedicine, value);
-  db.query(sql, function (error, result) {
-    if (error)
-      res.send(error);
-    res.json(result);
-  });
+  const validationError = validateMedicine(body)
+  if (validationError) {
+    res.send(validationError)
+  } else {
+    const nameMedicine = body.name
+    const idMedicine = body.idMedicine
+    var sql = script_update_medicine(idMedicine, nameMedicine);
+    db.query(sql, function (error, result) {
+      if (error)
+        res.send(error);
+      res.json(result);
+    });
+  }
 };

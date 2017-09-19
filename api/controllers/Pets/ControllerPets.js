@@ -113,13 +113,23 @@ exports.update_pet = function (req, res) {
   var db = require('../../models/Model')
   var body = req.body
 
-  const idPet = body.id
-  const column = body.column
-  const value = body.value
-  var sql = script_update_pet(idPet, column, value);
-  db.query(sql, function (error, result) {
-    if (error)
-      res.send(error);
-    res.json(result);
-  });
+  const validationError = validatePet(body)
+  if (validationError) {
+    res.send(validationError)
+  } else {
+    const idPet = body.idPet
+    const namePet = body.name
+    const birthDate = body.birthDate
+    const idSpecies = body.idSpecies
+    let idClient = body.idClient
+    if (!idClient) {
+      idClient = null
+    }
+    const sql = script_update_pet(idPet, namePet, birthDate, idSpecies, idClient)
+    db.query(sql, function (error, results, fields) {
+      if (error)
+        res.send(error);
+      res.json(results);
+    });
+  }
 };

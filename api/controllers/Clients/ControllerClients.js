@@ -97,13 +97,19 @@ exports.remove_client = function (req, res) {
 exports.update_client = function (req, res) {
   var db = require('../../models/Model')
   var body = req.body
-
-  const idClient = body.idClient
-  const value = body.value
-  var sql = script_update_client(idClient, value);
-  db.query(sql, function (error, result) {
-    if (error)
-      res.send(error);
-    res.json(result);
-  });
+  console.log(body)
+  const validationError = validateClients(body)
+  if (validationError) {
+    res.send(validationError)
+  } else {
+    const idClient = body.idClient
+    const nameClient = body.name
+    const birthDate = body.birthDate
+    var sql = script_update_client(idClient, nameClient, birthDate);
+    db.query(sql, function (error, result) {
+      if (error)
+        res.send(error);
+      res.json(result);
+    });
+  }
 };

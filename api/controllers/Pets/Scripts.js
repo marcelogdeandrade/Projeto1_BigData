@@ -4,8 +4,10 @@
 exports.script_list_all_pets = function(){
   return `SELECT
             Clients.name as nameClient,
+            Clients.idClient,
             Pets.name as namePet,
             Species.name as nameSpecies,
+            Species.idSpecies,
             Pets.idPet,
             Pets.birthDate
           FROM Species,Pets
@@ -40,6 +42,6 @@ exports.script_remove_pet = function(idPet){
  * Update pet
  */
 
- exports.script_update_pet = function(idPet, column, value){
-   return `UPDATE Pets SET ${column} = '${value}' WHERE idPet='${idPet}'`
+ exports.script_update_pet = function(idPet, name, birthDate, idSpecies, idClient){
+   return `UPDATE Pets SET name = '${name}', birthDate= '${birthDate}', idSpecies = '${idSpecies}', idClient = ${idClient} WHERE idPet='${idPet}'`
  }

@@ -24,6 +24,6 @@ exports.script_remove_illness = function(idIllness){
  * Update Illnesses
  */
 
- exports.script_update_illness = function(idIllness, column, value){
-   return `UPDATE Illnesses SET ${column} = '${value}' WHERE idIllness='${idIllness}'`
+ exports.script_update_illness = function(idIllness, name, isContagious){
+   return `UPDATE Illnesses SET name = '${name}', isContagious = '${isContagious}' WHERE idIllness='${idIllness}'`
  }

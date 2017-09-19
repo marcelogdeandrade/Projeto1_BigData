@@ -38,18 +38,21 @@ exports.script_add_foodlog = function (idFood, idPet, idClient, quantity, isIn) 
             (NULL, '${idFood}', ${idPet}, ${idClient}, ${quantity}, ${isIn}, TRUE)`
 }
 
+exports.script_update_quantity_food = function(idFood, quantity){
+  return `UPDATE Foods SET quantity = quantity + ${quantity} WHERE idFood = ${idFood}`
+}
 /**
  * Remove foodlog
  */
 
 exports.script_remove_foodlog = function (idFoodlog) {
-  return `UPDATE FoodLog SET status = '0' WHERE idFood='${idFoodlog}'`
+  return `UPDATE FoodLog SET status = '0' WHERE idFoodlog='${idFoodlog}'`
 }
 
 /**
  * Update foodlog
  */
 
-exports.script_update_foodlog = function (idFoodlog, column, value) {
-  return `UPDATE FoodLog SET ${column} = '${value}' WHERE idPet='${idFoodlog}'`
+exports.script_update_foodlog = function (idFoodlog, idFood, idPet, idClient, quantity, isIn) {
+  return `UPDATE FoodLog SET idFood = '${idFood}', idPet = '${idPet}', idClient = '${idClient}', quantity = '${quantity}', isIn = '${isIn}' WHERE idFoodlog='${idFoodlog}'`
 }

@@ -7,7 +7,8 @@ import {
   script_list_all_foodlog,
   script_add_foodlog,
   script_remove_foodlog,
-  script_update_foodlog
+  script_update_foodlog,
+  script_update_quantity_food
 } from './Scripts'
 
 /**
@@ -62,19 +63,50 @@ exports.add_foodlog = function (req, res) {
     const isIn = body.isIn
     let idPet = body.idPet
     let idClient = body.idClient
-    const quantity = body.quantity
+    let quantity = body.quantity
+    if (!isIn){
+      quantity = quantity * -1;
+    }
     if (!idClient) {
       idClient = null
     }
     if (!idPet) {
       idPet = null
     }
-    var sql = script_add_foodlog(idFood, idPet, idClient, quantity, isIn);
-    db.query(sql, function (error, result) {
-      if (error)
-        res.send(error);
-      res.json(result);
+    var sql1 = script_add_foodlog(idFood, idPet, idClient, quantity, isIn);
+    var sql2 = script_update_quantity_food(idFood, quantity);
+
+    /* Begin transaction */
+    db.beginTransaction(function (err) {
+      if (err) { res.send(err); }
+      console.log('1')
+      db.query(sql1, function (err, result) {
+        if (err) {
+          db.rollback(function () {
+            res.send(err);
+          });
+        }
+        db.query(sql2, function (err, result) {
+          if (err) {
+            console.log(err)
+            db.rollback(function () {
+              res.send(err);
+            });
+          }
+          console.log('3')
+          db.commit(function (err) {
+            if (err) {
+              db.rollback(function () {
+                res.send(err);
+              });
+            }
+            console.log('4')
+            res.json(result);
+          });
+        });
+      });
     });
+  /* End transaction */
   }
 };
 
@@ -89,7 +121,7 @@ exports.add_foodlog = function (req, res) {
 exports.remove_foodlog = function (req, res) {
   var db = require('../../models/Model')
   var body = req.query
-  const validationError = validateRemoveFoodlog(body)
+  const validationError = validateRemoveFoodLog(body)
   if (validationError) {
     res.send(validationError)
   } else {
@@ -115,13 +147,55 @@ exports.remove_foodlog = function (req, res) {
 exports.update_foodlog = function (req, res) {
   var db = require('../../models/Model')
   var body = req.body
+  const validationError = validateFoodLog(body)
+  console.log(body)
+  if (validationError) {
+    res.send(validationError)
+  } else {
+    const idFoodlog = body.idFoodlog
+    const idFood = body.idFood
+    const isIn = body.isIn
+    let idPet = body.idPet
+    let idClient = body.idClient
+    const quantity = body.quantity
+    if (!idClient) {
+      idClient = null
+    }
+    if (!idPet) {
+      idPet = null
+    }
+    var sql1 = script_update_foodlog(idFoodlog, idFood, idPet, idClient, quantity, isIn);
+    var sql2 = script_update_quantity_food(idFood, quantity);
 
-  const idFoodlog = body.idFoodlog
-  const value = body.value
-  var sql = script_update_foodlog(idFoodlog, value);
-  db.query(sql, function (error, result) {
-    if (error)
-      res.send(error);
-    res.json(result);
-  });
+    db.beginTransaction(function (err) {
+      if (err) { res.send(err); }
+      console.log('1')
+      db.query(sql1, function (err, result) {
+        if (err) {
+          db.rollback(function () {
+            res.send(err);
+          });
+        }
+        db.query(sql2, function (err, result) {
+          if (err) {
+            console.log(err)
+            db.rollback(function () {
+              res.send(err);
+            });
+          }
+          console.log('3')
+          db.commit(function (err) {
+            if (err) {
+              db.rollback(function () {
+                res.send(err);
+              });
+            }
+            console.log('4')
+            res.json(result);
+          });
+        });
+      });
+    });
+  /* End transaction */
+  }
 };
